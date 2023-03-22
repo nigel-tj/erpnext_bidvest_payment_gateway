@@ -15,7 +15,7 @@ from frappe.utils import get_url, call_hook_method, cint, flt
 from frappe.integrations.utils import make_get_request, make_post_request, create_request_log
 from payments.utils import create_payment_gateway
 
-class PayfastSettings(Document):
+class BidvestSettings(Document):
 	supported_currencies = [
 		"ZAR"
 	]
@@ -25,12 +25,12 @@ class PayfastSettings(Document):
 	}
 
 	def on_update(self):
-		create_payment_gateway('Payfast-' + self.gateway_name, settings='Payfast Settings', controller=self.gateway_name)
-		call_hook_method('payment_gateway_enabled', gateway='Payfast-' + self.gateway_name)
+		create_payment_gateway('Bidvest-' + self.gateway_name, settings='Bidvest Settings', controller=self.gateway_name)
+		call_hook_method('payment_gateway_enabled', gateway='Bidvest-' + self.gateway_name)
 
 	def validate_transaction_currency(self, currency):
 		if currency not in self.supported_currencies:
-			frappe.throw(_("Please select another payment method. Payfast does not support transactions in currency '{0}'").format(currency))
+			frappe.throw(_("Please select another payment method. Bidvest does not support transactions in currency '{0}'").format(currency))
 
 	def validate_minimum_transaction_amount(self, currency, amount):
 		if currency in self.currency_wise_minimum_charge_amount:
@@ -40,14 +40,14 @@ class PayfastSettings(Document):
 
 	def get_payment_url(self, **kwargs):
 		# add payment gateway details, don't send secrets in url
-		kwargs['payfast_url']=f"{environment_url(self.environment)}/eng/process"
-		kwargs['payfast_domain']=f"{environment_url(self.environment)}"
+		kwargs['bidvest_url']=f"{environment_url(self.environment)}/eng/process"
+		kwargs['bidvest_domain']=f"{environment_url(self.environment)}"
 		kwargs['gateway_docname']=self.gateway_name
-		kwargs['gateway_doctype']='Payfast Settings'
-		self.integration_request = create_request_log(kwargs, "Host", "Payfast")
-		# Payfast allows for up to 5 custom string fields. We can pass the integration request id 
+		kwargs['gateway_doctype']='Bidvest Settings'
+		self.integration_request = create_request_log(kwargs, "Host", "Bidvest")
+		# bidvest allows for up to 5 custom string fields. We can pass the integration request id 
 		kwargs['integration_request_id']=self.integration_request.name
-		return get_url("./payfast_checkout?{0}".format(urlencode(kwargs)))
+		return get_url("./bidvest_checkout?{0}".format(urlencode(kwargs)))
 
 def get_gateway_controller(doc):
 	payment_request = frappe.get_doc("Payment Request", doc)
@@ -55,7 +55,7 @@ def get_gateway_controller(doc):
 	return gateway_controller
 
 def get_ordered_fields():
-	# Payfast validates against a particular order before processing for payment
+	# bidvest validates against a particular order before processing for payment
 	ordered_fields = [
 		'merchant_id','merchant_key','return_url','cancel_url','notify_url', # merchant details
 		'name_first','name_last','email_address','cell_number', # customer details
@@ -84,20 +84,20 @@ def generateApiSignature(dataArray, passPhrase = ''):
 	return hashlib.md5(payload.encode()).hexdigest()
 
 def environment_url(env):
-	if env=='Live': return 'https://www.payfast.co.za'
-	return 'https://sandbox.payfast.co.za'
+	if env=='Live': return 'https://www.bidvest.co.za'
+	return 'https://sandbox.bidvest.co.za'
 
-def validate_payfast_signature(pfData, pfParamString):
-	# Generate our signature from PayFast parameters
+def validate_bidvest_signature(pfData, pfParamString):
+	# Generate our signature from bidvest parameters
 	signature = hashlib.md5(pfParamString.encode()).hexdigest()
 	return (pfData.get('signature') == signature)
 
-def validate_payfast_host(host=''):    
+def validate_bidvest_host(host=''):    
 	valid_hosts = [
-		'www.payfast.co.za',
-		'sandbox.payfast.co.za',
-		'w1w.payfast.co.za',
-		'w2w.payfast.co.za',
+		'www.bidvest.co.za',
+		'sandbox.bidvest.co.za',
+		'w1w.bidvest.co.za',
+		'w2w.bidvest.co.za',
     ]
 	valid_ips = []
 
@@ -125,10 +125,10 @@ def validate_payfast_host(host=''):
 	else:
 		return True 
 
-def validate_payfast_payment_amount(amount, pfData):
+def validate_bidvest_payment_amount(amount, pfData):
     return not (abs(float(amount)) - float(pfData.get('amount_gross'))) > 0.01
 
-def validate_payfast_transaction(pfParamString, pfHost = 'https://sandbox.payfast.co.za'):
+def validate_bidvest_transaction(pfParamString, pfHost = 'https://sandbox.bidvest.co.za'):
     url = f"{pfHost}/eng/query/validate"
     headers = {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -161,7 +161,7 @@ def test_connection(data):
 	# message = message.replace('/eng/js/',f"{environment_url(env)}/eng/js/")
 	# print(response.text)
 	if env=='Live':
-		message = 'Merchant ID and/or Merchant Key and/or Passphrase are either incorrect or does not exist in the Payfast Live environment. Please ensure that these are configured in the Developer Settings.'
+		message = 'Merchant ID and/or Merchant Key and/or Passphrase are either incorrect or does not exist in the bidvest Live environment. Please ensure that these are configured in the Developer Settings.'
 		if response.status_code==200:
 			message = 'Connection was successful.'
 	return {'status_code':response.status_code, 'message': message}
