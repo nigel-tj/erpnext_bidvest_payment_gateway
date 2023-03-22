@@ -3,7 +3,7 @@ import frappe
 from frappe import _
 from frappe.utils import flt
 import json
-from payment_gateway_bidvest.payment_gateway_payfast.doctype.payfast_settings.payfast_settings import *
+from payment_gateway_bidvest.payment_gateway_bidvest.doctype.bidvest_settings.bidvest_settings import *
 
 
 no_cache = 1
@@ -26,11 +26,11 @@ def get_context(context):
 		'm_payment_id':data.get('order_id') or '',
 		'merchant_id':context.gateway_details.get('merchant_id') or '',
 		'merchant_key':context.gateway_details.get('merchant_key') or '',
-		'return_url':context.gateway_details.get('return_url') or f"{frappe.utils.get_url()}/payfast_success",
-		'cancel_url':f"{frappe.utils.get_url()}/payfast_cancel?integration_request_id={data.get('integration_request_id')}",
+		'return_url':context.gateway_details.get('return_url') or f"{frappe.utils.get_url()}/bidvest_success",
+		'cancel_url':f"{frappe.utils.get_url()}/bidvest_cancel?integration_request_id={data.get('integration_request_id')}",
 		# 'cancel_url':data.get('redirect_to') or '',
-		'notify_url':f"{frappe.utils.get_url()}/payfast_notify",
-		# 'notify_url':context.gateway_details.get('notify_url') or f"{frappe.utils.get_url()}/payfast_notify",
+		'notify_url':f"{frappe.utils.get_url()}/bidvest_notify",
+		# 'notify_url':context.gateway_details.get('notify_url') or f"{frappe.utils.get_url()}/bidvest_notify",
 	}
 	submission_data=build_submission_data(submission_data)
 	submission_data['signature'] = generateApiSignature(submission_data, passPhrase=gateway_doc.get_password('passphrase'))
@@ -62,6 +62,6 @@ def make_payment(payload_nonce, data, reference_doctype, reference_docname):
 	})
 
 	gateway_controller = get_gateway_controller(reference_docname)
-	data =  frappe.get_doc("Payfast Settings", gateway_controller).create_payment_request(data)
+	data =  frappe.get_doc("bidvest Settings", gateway_controller).create_payment_request(data)
 	frappe.db.commit()
 	return data

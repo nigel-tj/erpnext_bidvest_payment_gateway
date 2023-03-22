@@ -1,12 +1,12 @@
 from . import __version__ as app_version
 
-app_name = "payment_gateway_payfast"
-app_title = "Payment Gateway Payfast"
-app_publisher = "Alberto Gutierrez"
-app_description = "Payfast Payment Gateway Intergration"
+app_name = "payment_gateway_bidvest"
+app_title = "Payment Gateway Bidvest"
+app_publisher = "Nigel Jena"
+app_description = "Bidvest Payment Gateway Intergration"
 app_icon = "octicon octicon-file-directory"
 app_color = "grey"
-app_email = "albertogutierrez826@gmail.com"
+app_email = "hypej.10@gmail.com"
 app_license = "MIT"
 
 # Includes in <head>

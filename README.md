@@ -35,12 +35,12 @@ Doctype: Bidvest Settings
 The first section is necessary to ensure successful integration with Bidvest
 
 Requirement: A merchant account with Bidvest.
-![Payment Integration](./Bidvest-settings-form.JPG)
+![Payment Integration](./payfast-settings-form.JPG)
 
 The second optional section is necessary to ensure successful integration with ERPNext Accounts module
 
 Requirement: ERPNext app installed
-![Accounts Integration](./Bidvest-settings-form-accounts.JPG)
+![Accounts Integration](./payfast-settings-form-accounts.JPG)
 
 
 #### License

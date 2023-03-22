@@ -7,16 +7,16 @@ from frappe.utils import flt
 from urllib.parse import parse_qsl, quote_plus, urlparse
 import hashlib
 import json
-from payment_gateway_bidvest.payment_gateway_payfast.doctype.payfast_settings.payfast_settings import validate_payfast_host, validate_payfast_signature, validate_payfast_payment_amount, validate_payfast_transaction
+from payment_gateway_bidvest.payment_gateway_bidvest.doctype.bidvest_settings.bidvest_settings import validate_bidvest_host, validate_bidvest_signature, validate_bidvest_payment_amount, validate_bidvest_transaction
 
 def get_context(context):
-    # make sure that only payfast host can update docs with url query
-    is_valid_payfast_host = validate_payfast_host(url_parse(frappe.request.headers.get("Referer") or '').host or '')
-    if is_valid_payfast_host:
-        payfast_cancel_request = urlparse(frappe.request.url)
-        payfast_cancel_data = dict(parse_qsl(payfast_cancel_request.query))
-        print('payfast_cancel_data', payfast_cancel_data)
-        integration_request = frappe.get_doc("Integration Request", payfast_cancel_data.get('integration_request_id'))
+    # make sure that only bidvest host can update docs with url query
+    is_valid_bidvest_host = validate_bidvest_host(url_parse(frappe.request.headers.get("Referer") or '').host or '')
+    if is_valid_bidvest_host:
+        bidvest_cancel_request = urlparse(frappe.request.url)
+        bidvest_cancel_data = dict(parse_qsl(bidvest_cancel_request.query))
+        print('bidvest_cancel_data', bidvest_cancel_data)
+        integration_request = frappe.get_doc("Integration Request", bidvest_cancel_data.get('integration_request_id'))
         integration_data = frappe._dict(json.loads(integration_request.data))
         print('integration_data', integration_request.status)
         integration_request.db_set('status', 'Cancelled')

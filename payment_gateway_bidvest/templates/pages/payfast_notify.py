@@ -8,40 +8,40 @@ from frappe.utils import flt
 from urllib.parse import parse_qsl, quote_plus
 import hashlib
 import json
-from payment_gateway_bidvest.payment_gateway_payfast.doctype.payfast_settings.payfast_settings import validate_payfast_host, validate_payfast_signature, validate_payfast_payment_amount, validate_payfast_transaction
+from payment_gateway_bidvest.payment_gateway_bidvest.doctype.bidvest_settings.bidvest_settings import validate_bidvest_host, validate_bidvest_signature, validate_bidvest_payment_amount, validate_bidvest_transaction
 from erpnext.accounts.doctype.payment_entry.payment_entry import get_payment_entry
 
 def get_context(context):
-	payfast_notify_data = dict(parse_qsl(frappe.request.data.decode('UTF-8'), keep_blank_values=True))
+	bidvest_notify_data = dict(parse_qsl(frappe.request.data.decode('UTF-8'), keep_blank_values=True))
 
-	integration_request = frappe.get_doc("Integration Request", payfast_notify_data.get('custom_str1'))
+	integration_request = frappe.get_doc("Integration Request", bidvest_notify_data.get('custom_str1'))
 	integration_data = frappe._dict(json.loads(integration_request.data))
 
 	gateway_doc = frappe.get_doc(integration_data.get('gateway_doctype'), integration_data.get('gateway_docname'))
 	passphrase=gateway_doc.get_password('passphrase')
 
 	pfParamString = ""
-	for key in payfast_notify_data:
-	# Get all the data from PayFast and prepare parameter string
+	for key in bidvest_notify_data:
+	# Get all the data from bidvest and prepare parameter string
 		if key != 'signature':
-			pfParamString += key + "=" + quote_plus(payfast_notify_data[key].replace("+", " ")) + "&"
+			pfParamString += key + "=" + quote_plus(bidvest_notify_data[key].replace("+", " ")) + "&"
 	# After looping through, cut the last & or append your passphrase
 	pfParamString_Pass = pfParamString+f"passphrase={passphrase}"
 	pfParamString = pfParamString[:-1]
 	signature = hashlib.md5(pfParamString_Pass.encode()).hexdigest()
 	pfParamString += f"&signature={signature}"
 
-	is_valid_payfast_host = validate_payfast_host(url_parse(frappe.request.headers.get("Referer")).host)
-	is_valid_signature = validate_payfast_signature(payfast_notify_data, pfParamString_Pass)
-	is_valid_payment_amount = validate_payfast_payment_amount(integration_data.get('amount'), payfast_notify_data)
-	is_valid_transaction = validate_payfast_transaction(pfParamString, integration_data.get('payfast_domain'))
+	is_valid_bidvest_host = validate_bidvest_host(url_parse(frappe.request.headers.get("Referer")).host)
+	is_valid_signature = validate_bidvest_signature(bidvest_notify_data, pfParamString_Pass)
+	is_valid_payment_amount = validate_bidvest_payment_amount(integration_data.get('amount'), bidvest_notify_data)
+	is_valid_transaction = validate_bidvest_transaction(pfParamString, integration_data.get('bidvest_domain'))
 	
-	# print('Notification', payfast_notify_data)
+	# print('Notification', bidvest_notify_data)
 	# print('pfParamString', pfParamString)
-	# print('Validations', is_valid_payfast_host, is_valid_signature, is_valid_payment_amount, is_valid_transaction)
+	# print('Validations', is_valid_bidvest_host, is_valid_signature, is_valid_payment_amount, is_valid_transaction)
 	
-	if (is_valid_payfast_host and  is_valid_signature and is_valid_payment_amount and is_valid_transaction):
-		status = 'Completed' if payfast_notify_data.get('payment_status')=='COMPLETE' else 'Failed'
+	if (is_valid_bidvest_host and  is_valid_signature and is_valid_payment_amount and is_valid_transaction):
+		status = 'Completed' if bidvest_notify_data.get('payment_status')=='COMPLETE' else 'Failed'
 		integration_request.db_set('status', status)
 		if integration_request.get('reference_doctype')=='Payment Request':
 			payment_request = frappe.get_doc(integration_request.get('reference_doctype'),integration_data.get('reference_docname'))
@@ -64,24 +64,24 @@ def get_context(context):
 				'paid_from_account_currency': integration_data.get('currency'),
 				'paid_to': gateway_doc.paid_to,
 				'paid_to_account_currency': integration_data.get('currency'),
-				'paid_amount': float(payfast_notify_data.get('amount_net')),
-				'received_amount': float(payfast_notify_data.get('amount_gross')),
+				'paid_amount': float(bidvest_notify_data.get('amount_net')),
+				'received_amount': float(bidvest_notify_data.get('amount_gross')),
 				'target_exchange_rate': 1.0,
-				'reference_no': payfast_notify_data.get('pf_payment_id'),
+				'reference_no': bidvest_notify_data.get('pf_payment_id'),
 				'reference_date': frappe.utils.today(),
 				'references':[{
 					'doctype':'Payment Entry Reference',
 					'reference_doctype':'Sales Invoice',
 					'reference_name': reference_doc.name,
-					'total_amount': float(payfast_notify_data.get('amount_gross')),
-					'allocated_amount': float(payfast_notify_data.get('amount_gross')),
+					'total_amount': float(bidvest_notify_data.get('amount_gross')),
+					'allocated_amount': float(bidvest_notify_data.get('amount_gross')),
 					'exchange_rate': 1.0
 				}],
 				'deductions':[{
 					'doctype':'Payment Entry Deduction',
 					'account':gateway_doc.expense_account,
 					'cost_center':gateway_doc.cost_center,
-					'amount': -float(payfast_notify_data.get('amount_fee'))
+					'amount': -float(bidvest_notify_data.get('amount_fee'))
 				}]
 			})
 			payment_entry.insert(ignore_permissions=True)
@@ -167,24 +167,24 @@ def get_context(context):
 					'paid_from_account_currency': integration_data.get('currency'),
 					'paid_to': gateway_doc.paid_to,
 					'paid_to_account_currency': integration_data.get('currency'),
-					'paid_amount': float(payfast_notify_data.get('amount_net')),
-					'received_amount': float(payfast_notify_data.get('amount_gross')),
+					'paid_amount': float(bidvest_notify_data.get('amount_net')),
+					'received_amount': float(bidvest_notify_data.get('amount_gross')),
 					'target_exchange_rate': 1.0,
-					'reference_no': payfast_notify_data.get('pf_payment_id'),
+					'reference_no': bidvest_notify_data.get('pf_payment_id'),
 					'reference_date': frappe.utils.today(),
 					'references':[{
 						'doctype':'Payment Entry Reference',
 						'reference_doctype':'Sales Invoice',
 						'reference_name': sales_invoice.name,
-						'total_amount': float(payfast_notify_data.get('amount_gross')),
-						'allocated_amount': float(payfast_notify_data.get('amount_gross')),
+						'total_amount': float(bidvest_notify_data.get('amount_gross')),
+						'allocated_amount': float(bidvest_notify_data.get('amount_gross')),
 						'exchange_rate': 1.0
 					}],
 					'deductions':[{
 						'doctype':'Payment Entry Deduction',
 						'account':gateway_doc.expense_account,
 						'cost_center':gateway_doc.cost_center,
-						'amount': -float(payfast_notify_data.get('amount_fee'))
+						'amount': -float(bidvest_notify_data.get('amount_fee'))
 					}]
 				})
 				payment_entry.insert(ignore_permissions=True)
@@ -203,7 +203,7 @@ def get_context(context):
 	else:
 		integration_request.db_set('status', 'Failed')
 		integration_request.db_set('error', json.dump({
-			'is_valid_payfast_host':is_valid_payfast_host,
+			'is_valid_bidvest_host':is_valid_bidvest_host,
 			'is_valid_signature':is_valid_signature,
 			'is_valid_payment_amount': is_valid_payment_amount,
 			'is_valid_transaction':is_valid_transaction
