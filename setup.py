@@ -4,7 +4,7 @@ with open("requirements.txt") as f:
 	install_requires = f.read().strip().split("\n")
 
 # get version from __version__ variable in payment_gateway_payfast/__init__.py
-from payment_gateway_payfast import __version__ as version
+from payment_gateway_bidvest import __version__ as version
 
 setup(
 	name="payment_gateway_bidvest",
