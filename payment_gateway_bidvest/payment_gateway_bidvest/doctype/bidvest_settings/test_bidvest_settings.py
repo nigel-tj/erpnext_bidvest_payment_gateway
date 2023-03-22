@@ -4,5 +4,5 @@
 # import frappe
 import unittest
 
-class TestPayfastSettings(unittest.TestCase):
+class TestBidvestSettings(unittest.TestCase):
 	pass

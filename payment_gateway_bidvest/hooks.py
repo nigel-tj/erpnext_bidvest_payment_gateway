@@ -13,15 +13,15 @@ app_license = "MIT"
 # ------------------
 
 # include js, css files in header of desk.html
-# app_include_css = "/assets/payment_gateway_payfast/css/payment_gateway_payfast.css"
-# app_include_js = "/assets/payment_gateway_payfast/js/payment_gateway_payfast.js"
+# app_include_css = "/assets/payment_gateway_bidvest/css/payment_gateway_bidvest.css"
+# app_include_js = "/assets/payment_gateway_bidvest/js/payment_gateway_bidvest.js"
 
 # include js, css files in header of web template
-# web_include_css = "/assets/payment_gateway_payfast/css/payment_gateway_payfast.css"
-# web_include_js = "/assets/payment_gateway_payfast/js/payment_gateway_payfast.js"
+# web_include_css = "/assets/payment_gateway_bidvest/css/payment_gateway_bidvest.css"
+# web_include_js = "/assets/payment_gateway_bidvest/js/payment_gateway_bidvest.js"
 
 # include custom scss in every website theme (without file extension ".scss")
-# website_theme_scss = "payment_gateway_payfast/public/scss/website"
+# website_theme_scss = "payment_gateway_bidvest/public/scss/website"
 
 # include js, css files in header of web form
 # webform_include_js = {"doctype": "public/js/doctype.js"}
@@ -58,27 +58,27 @@ app_license = "MIT"
 
 # add methods and filters to jinja environment
 # jinja = {
-# 	"methods": "payment_gateway_payfast.utils.jinja_methods",
-# 	"filters": "payment_gateway_payfast.utils.jinja_filters"
+# 	"methods": "payment_gateway_bidvest.utils.jinja_methods",
+# 	"filters": "payment_gateway_bidvest.utils.jinja_filters"
 # }
 
 # Installation
 # ------------
 
-# before_install = "payment_gateway_payfast.install.before_install"
-# after_install = "payment_gateway_payfast.install.after_install"
+# before_install = "payment_gateway_bidvest.install.before_install"
+# after_install = "payment_gateway_bidvest.install.after_install"
 
 # Uninstallation
 # ------------
 
-# before_uninstall = "payment_gateway_payfast.uninstall.before_uninstall"
-# after_uninstall = "payment_gateway_payfast.uninstall.after_uninstall"
+# before_uninstall = "payment_gateway_bidvest.uninstall.before_uninstall"
+# after_uninstall = "payment_gateway_bidvest.uninstall.after_uninstall"
 
 # Desk Notifications
 # ------------------
 # See frappe.core.notifications.get_notification_config
 
-# notification_config = "payment_gateway_payfast.notifications.get_notification_config"
+# notification_config = "payment_gateway_bidvest.notifications.get_notification_config"
 
 # Permissions
 # -----------
@@ -117,39 +117,39 @@ app_license = "MIT"
 
 # scheduler_events = {
 # 	"all": [
-# 		"payment_gateway_payfast.tasks.all"
+# 		"payment_gateway_bidvest.tasks.all"
 # 	],
 # 	"daily": [
-# 		"payment_gateway_payfast.tasks.daily"
+# 		"payment_gateway_bidvest.tasks.daily"
 # 	],
 # 	"hourly": [
-# 		"payment_gateway_payfast.tasks.hourly"
+# 		"payment_gateway_bidvest.tasks.hourly"
 # 	],
 # 	"weekly": [
-# 		"payment_gateway_payfast.tasks.weekly"
+# 		"payment_gateway_bidvest.tasks.weekly"
 # 	],
 # 	"monthly": [
-# 		"payment_gateway_payfast.tasks.monthly"
+# 		"payment_gateway_bidvest.tasks.monthly"
 # 	],
 # }
 
 # Testing
 # -------
 
-# before_tests = "payment_gateway_payfast.install.before_tests"
+# before_tests = "payment_gateway_bidvest.install.before_tests"
 
 # Overriding Methods
 # ------------------------------
 #
 # override_whitelisted_methods = {
-# 	"frappe.desk.doctype.event.event.get_events": "payment_gateway_payfast.event.get_events"
+# 	"frappe.desk.doctype.event.event.get_events": "payment_gateway_bidvest.event.get_events"
 # }
 #
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,
 # along with any modifications made in other Frappe apps
 # override_doctype_dashboards = {
-# 	"Task": "payment_gateway_payfast.task.get_dashboard_data"
+# 	"Task": "payment_gateway_bidvest.task.get_dashboard_data"
 # }
 
 # exempt linked doctypes from being automatically cancelled
@@ -185,6 +185,6 @@ app_license = "MIT"
 # --------------------------------
 
 # auth_hooks = [
-# 	"payment_gateway_payfast.auth.validate"
+# 	"payment_gateway_bidvest.auth.validate"
 # ]
 
