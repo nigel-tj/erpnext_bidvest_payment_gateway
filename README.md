@@ -1,23 +1,22 @@
-## Payment Gateway Payfast
+## Payment Gateway Bidvest
 
-Payfast Payment Gateway Intergration App for Frappe and ERPNext.
+Bidvest Payment Gateway Intergration App for Frappe and ERPNext.
 
-> Disclaimer: This app is NOT an official app of Payfast. Development of the app was guided by the Payfast Custom Integration documentation and the ERPNext process flows. It is your responsibility to review and ensure your process flows and security standards are met. The author will not be held reponsible for any loss as stipulated in the MIT License.
+> Disclaimer: This app is NOT an official app of Bidvest. Development of the app was guided by the Bidvest Custom Integration documentation and the ERPNext process flows. It is your responsibility to review and ensure your process flows and security standards are met. The author will not be held reponsible for any loss as stipulated in the MIT License.
 
 
 
-Supported Frappe & ERPNext versions: version-13
+Supported Frappe & ERPNext versions: version-14
 
-Payfast Integration documentation: https://developers.payfast.co.za/docs
 
 Supported currencies = ZAR (South African Rand)
 
 Supported process flows: Web forms and payment requests.
 
 ### Installation
-bench --site [sitename] get-app https://github.com/Alberto826/erpnext_payfast_payment_gateway --branch [release tag]
+bench --site [sitename] get-app  --branch [release tag]
 
-bench --site [sitename] install-app payment_gateway_payfast
+bench --site [sitename] install-app payment_gateway_Bidvest
 
 bench --site [sitename] migrate
 
@@ -31,17 +30,17 @@ bench --site [sitename] migrate
 
 ### Doctype description
 
-Doctype: Payfast Settings
+Doctype: Bidvest Settings
 
-The first section is necessary to ensure successful integration with Payfast
+The first section is necessary to ensure successful integration with Bidvest
 
-Requirement: A merchant account with Payfast.
-![Payment Integration](./Payfast-settings-form.JPG)
+Requirement: A merchant account with Bidvest.
+![Payment Integration](./Bidvest-settings-form.JPG)
 
 The second optional section is necessary to ensure successful integration with ERPNext Accounts module
 
 Requirement: ERPNext app installed
-![Accounts Integration](./Payfast-settings-form-accounts.JPG)
+![Accounts Integration](./Bidvest-settings-form-accounts.JPG)
 
 
 #### License

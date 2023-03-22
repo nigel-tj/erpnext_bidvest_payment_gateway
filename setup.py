@@ -7,11 +7,11 @@ with open("requirements.txt") as f:
 from payment_gateway_payfast import __version__ as version
 
 setup(
-	name="payment_gateway_payfast",
+	name="payment_gateway_bidvest",
 	version=version,
-	description="Payfast Payment Gateway Intergration",
-	author="Alberto Gutierrez",
-	author_email="albertogutierrez826@gmail.com",
+	description="Bidvest Payment Gateway Intergration",
+	author="Nigel Jena",
+	author_email="hypej.10@gmail.com",
 	packages=find_packages(),
 	zip_safe=False,
 	include_package_data=True,
