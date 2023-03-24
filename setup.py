@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 with open("requirements.txt") as f:
 	install_requires = f.read().strip().split("\n")
 
-# get version from __version__ variable in payment_gateway_payfast/__init__.py
+# get version from __version__ variable in payment_gateway_bidvest/__init__.py
 from payment_gateway_bidvest import __version__ as version
 
 setup(

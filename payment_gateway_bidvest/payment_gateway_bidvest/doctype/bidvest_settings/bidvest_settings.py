@@ -40,7 +40,7 @@ class BidvestSettings(Document):
 
 	def get_payment_url(self, **kwargs):
 		# add payment gateway details, don't send secrets in url
-		kwargs['bidvest_url']=f"{environment_url(self.environment)}/eng/process"
+		kwargs['bidvest_url']=f"{environment_url(self.environment)}/connect/gateway/processing"
 		kwargs['bidvest_domain']=f"{environment_url(self.environment)}"
 		kwargs['gateway_docname']=self.gateway_name
 		kwargs['gateway_doctype']='Bidvest Settings'
@@ -57,7 +57,7 @@ def get_gateway_controller(doc):
 def get_ordered_fields():
 	# bidvest validates against a particular order before processing for payment
 	ordered_fields = [
-		'merchant_id','merchant_key','return_url','cancel_url','notify_url', # merchant details
+		'storename','return_url','cancel_url','notify_url', # merchant details
 		'name_first','name_last','email_address','cell_number', # customer details
 		'm_payment_id','amount','item_name','item_description', # transaction details
 		'custom_int1','custom_int2','custom_int3','custom_int4','custom_int5', # transaction custom details
@@ -85,7 +85,7 @@ def generateApiSignature(dataArray, passPhrase = ''):
 
 def environment_url(env):
 	if env=='Live': return 'https://www.bidvest.co.za'
-	return 'https://sandbox.bidvest.co.za'
+	return 'https://test.ipg-online.com'
 
 def validate_bidvest_signature(pfData, pfParamString):
 	# Generate our signature from bidvest parameters
@@ -94,10 +94,7 @@ def validate_bidvest_signature(pfData, pfParamString):
 
 def validate_bidvest_host(host=''):    
 	valid_hosts = [
-		'www.bidvest.co.za',
-		'sandbox.bidvest.co.za',
-		'w1w.bidvest.co.za',
-		'w2w.bidvest.co.za',
+		'test.ipg-online.com'
     ]
 	valid_ips = []
 
@@ -128,7 +125,7 @@ def validate_bidvest_host(host=''):
 def validate_bidvest_payment_amount(amount, pfData):
     return not (abs(float(amount)) - float(pfData.get('amount_gross'))) > 0.01
 
-def validate_bidvest_transaction(pfParamString, pfHost = 'https://sandbox.bidvest.co.za'):
+def validate_bidvest_transaction(pfParamString, pfHost = 'https://test.ipg-online.com/'):
     url = f"{pfHost}/eng/query/validate"
     headers = {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -148,7 +145,7 @@ def test_connection(data):
 	data['item_name']='Test Product'
 	signature = generateApiSignature(data, passPhrase=passphrase)
 	data['signature']=signature
-	response = requests.post(f"{environment_url(env)}/eng/process", 
+	response = requests.post(f"{environment_url(env)}/connect/gateway/processing", 
 		params=data,
 		headers={
 			'Accept': 'application/json',
@@ -161,7 +158,7 @@ def test_connection(data):
 	# message = message.replace('/eng/js/',f"{environment_url(env)}/eng/js/")
 	# print(response.text)
 	if env=='Live':
-		message = 'Merchant ID and/or Merchant Key and/or Passphrase are either incorrect or does not exist in the bidvest Live environment. Please ensure that these are configured in the Developer Settings.'
+		message = 'Store ID and/or Merchant Key and/or Sharedphrase are either incorrect or does not exist in the bidvest Live environment. Please ensure that these are configured in the Developer Settings.'
 		if response.status_code==200:
 			message = 'Connection was successful.'
 	return {'status_code':response.status_code, 'message': message}

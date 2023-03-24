@@ -2,7 +2,7 @@
  "actions": [],
  "allow_rename": 1,
  "autoname": "field:gateway_name",
- "creation": "2022-03-15 23:03:29.123740",
+ "creation": "2023-03-15 23:03:29.123740",
  "description": "Configure the Bidvest Payment Gateway settings. For more info on the integration and API documentation, visit \n",
  "doctype": "DocType",
  "documentation": "",
@@ -10,8 +10,7 @@
  "engine": "InnoDB",
  "field_order": [
   "gateway_name",
-  "merchant_id",
-  "merchant_key",
+  "storename",
   "passphrase",
   "column_break_5",
   "environment",
@@ -33,23 +32,15 @@
  ],
  "fields": [
   {
-   "description": "The Merchant ID as given by the Bidvest system.",
-   "fieldname": "merchant_id",
+   "description": "The Store ID as given by the Bidvest system.",
+   "fieldname": "storename",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Merchant ID",
+   "label": "Store ID",
    "reqd": 1
   },
   {
-   "description": "The Merchant Key as given by the Bidvest system.",
-   "fieldname": "merchant_key",
-   "fieldtype": "Password",
-   "in_list_view": 1,
-   "label": "Merchant Key",
-   "reqd": 1
-  },
-  {
-   "description": "The passphrase is an extra security feature, used as a \"salt\", and is set by the Merchant in the Settings section of their Bidvest Dashboard.",
+   "description": "The Shared phrase is an extra security feature, used as a \"salt\", and is set by the Merchant in the Settings section of their Bidvest Dashboard.",
    "fieldname": "passphrase",
    "fieldtype": "Password",
    "in_list_view": 1,

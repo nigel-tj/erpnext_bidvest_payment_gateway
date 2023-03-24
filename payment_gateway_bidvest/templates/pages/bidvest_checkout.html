@@ -12,7 +12,7 @@
 	<div class="container">
         <h2>Checkout Confirmation</h2>
 
-		<form method="post" action="{{ payment_details.payfast_url }}" name="payfast_checkout_form">
+		<form method="post" action="{{ payment_details.bidvest_url }}" name="bidvest_checkout_form">
 			<input type="hidden" name="merchant_id" value="{{submission_data.merchant_id}}">
             <input type="hidden" name="merchant_key" value="{{submission_data.merchant_key}}">
             <input type="hidden" name="return_url" value="{{submission_data.return_url}}">

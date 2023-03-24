@@ -1,4 +1,4 @@
-// Copyright (c) 2022, Alberto Gutierrez and contributors
+// Copyright (c) 2023, Nigel Jena and contributors
 // For license information, please see license.txt
 
 frappe.ui.form.on('Bidvest Settings', {
@@ -80,8 +80,7 @@ frappe.ui.form.on('Bidvest Settings', 'test_connection', function(){
 	frappe.call({
 		method:'payment_gateway_bidvest.payment_gateway_bidvest.doctype.bidvest_settings.bidvest_settings.test_connection',
 		args: { data:{
-			merchant_id: cur_frm.doc.merchant_id,
-			merchant_key: cur_frm.doc.merchant_key,
+			merchant_id: cur_frm.doc.storename,
 			passphrase: cur_frm.doc.passphrase,
 			environment: cur_frm.doc.environment
 		}},
