@@ -77,6 +77,7 @@ def generateApiSignature(dataArray, passPhrase = ''):
 	payload = "" 
 	for key in get_ordered_fields():
 		if dataArray.get(key):
+			print('key', key)
 			payload += key + "=" + urllib.parse.quote_plus(dataArray[key].replace("+", " ")) + "&"
 	# After looping through, cut the last & or append your passphrase
 	payload = payload[:-1]
