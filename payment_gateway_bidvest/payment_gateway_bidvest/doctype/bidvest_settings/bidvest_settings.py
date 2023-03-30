@@ -60,8 +60,9 @@ def get_ordered_fields():
 		'storename','return_url','cancel_url','notify_url', # merchant details
 		'name_first','name_last','email_address','cell_number', # customer details
 		'm_payment_id','amount','item_name','item_description', # transaction details
+		'txndatetime','currency', 'sharedsecret','custom_str4','custom_str5', # transaction custom details
 		'custom_int1','custom_int2','custom_int3','custom_int4','custom_int5', # transaction custom details
-		'custom_str1','custom_str2','custom_str3','custom_str4','custom_str5', # transaction custom details
+		
 		'email_confirmation','confirmation_address', # transaction options
 	]
 	return ordered_fields
@@ -81,7 +82,14 @@ def generateApiSignature(dataArray, passPhrase = ''):
 	payload = payload[:-1]
 	if passPhrase!='': payload += f"&passphrase={passPhrase}"
 	print('payload', payload)
-	return hashlib.md5(payload.encode()).hexdigest()
+
+	# Concatenate the fields in the specified order
+	message = dataArray[0] + dataArray[12] + dataArray[9] + dataArray[13] + dataArray[14]
+
+	# Generate the SHA-256 hash of the message
+	hash_object = hashlib.sha256(message.encode())
+
+	return hash_object.hexdigest()
 
 def environment_url(env):
 	if env=='Live': return 'https://www.bidvest.co.za'

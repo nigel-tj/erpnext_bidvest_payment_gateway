@@ -13,11 +13,17 @@
         <h2>Checkout Confirmation</h2>
 
 		<form method="post" action="{{ payment_details.bidvest_url }}" name="bidvest_checkout_form">
-			<input type="hidden" name="merchant_id" value="{{submission_data.merchant_id}}">
-            <input type="hidden" name="merchant_key" value="{{submission_data.merchant_key}}">
+			<input type="hidden" name="storename" value="{{submission_data.storename}}">
+            <input type="hidden" name="txntype" value="sale">
             <input type="hidden" name="return_url" value="{{submission_data.return_url}}">
             <input type="hidden" name="cancel_url" value="{{submission_data.cancel_url}}">
             <input type="hidden" name="notify_url" value="{{submission_data.notify_url}}">
+            <input type="hidden" name="timezone" value="{{submission_data.timezone}}"/>
+            <input type="hidden" name="txndatetime" value="{{submission_data.txndatetime}}"/>
+            <input type=”hidden” name=”hash_algorithm” value=”SHA256”/>
+	
+            <input type="hidden" name="hash" value="<?php echo createHash( "13.00","978" ) ?>"/>
+
             <div class="form-group row">
                 <label for="name_first" class="col-sm-2 col-form-label">Name</label>
                 <div class="col-sm-10">

@@ -30,10 +30,14 @@ def get_context(context):
 		# 'cancel_url':data.get('redirect_to') or '',
 		'notify_url':f"{frappe.utils.get_url()}/bidvest_notify",
 		# 'notify_url':context.gateway_details.get('notify_url') or f"{frappe.utils.get_url()}/bidvest_notify",
+		'txndatetime':f"{frappe.utils.now_datetime().strftime('%Y:%m:%d-%H:%M:%S')}",
+		'timezone':f"{frappe.get_doc('System Settings').timezone}",
+		'currency': data.get('currency'),
+		'sharedsecret': context.gateway_details.get('passphrase') or '',
 	}
 	submission_data=build_submission_data(submission_data)
-	submission_data['signature'] = generateApiSignature(submission_data, passPhrase=gateway_doc.get_password('passphrase'))
-	context.payment_details['signature']=submission_data['signature']
+	submission_data['hash'] = generateApiSignature(submission_data, passPhrase=gateway_doc.get_password('passphrase'))
+	context.payment_details['hash']=submission_data['hash']
 	context.submission_data=submission_data
 	web_ref_doc =  frappe.get_doc(data.get('reference_doctype'), data.get('reference_docname'))
 	context.reference_details = web_ref_doc.as_dict()
