@@ -3,7 +3,7 @@
 
 frappe.ui.form.on('Bidvest Settings', {
 	refresh: function(frm) {
-		frm.disable_save();
+		//frm.disable_save();
 		frm.set_query('paid_to', () => {
 			return {
 				filters: {
