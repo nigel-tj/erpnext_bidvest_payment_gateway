@@ -44,7 +44,7 @@
    "fieldname": "passphrase",
    "fieldtype": "Password",
    "in_list_view": 1,
-   "label": "Passphrase",
+   "label": "Shared Secret",
    "reqd": 1
   },
   {

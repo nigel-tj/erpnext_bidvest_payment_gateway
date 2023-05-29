@@ -11,7 +11,7 @@ import hashlib
 import requests
 import socket
 from urllib.parse import urlencode
-from frappe.utils import get_url, call_hook_method, cint, flt
+from frappe.utils import get_url, call_hook_method, cint, flt, format_datetime
 from frappe.integrations.utils import make_get_request, make_post_request, create_request_log
 from payments.utils import create_payment_gateway
 
@@ -57,10 +57,10 @@ def get_gateway_controller(doc):
 def get_ordered_fields():
 	# bidvest validates against a particular order before processing for payment
 	ordered_fields = [
-		'storename','return_url','cancel_url','notify_url', # merchant details
+		'storename', 'txndatetime', 'amount', 'currency', 'sharedsecret','return_url','cancel_url','notify_url', # merchant details
 		'name_first','name_last','email_address','cell_number', # customer details
-		'm_payment_id','amount','item_name','item_description', # transaction details
-		'txndatetime','currency', 'sharedsecret','custom_str4','custom_str5', # transaction custom details
+		'm_payment_id','item_name','item_description', # transaction details
+		'custom_str4','custom_str5', # transaction custom details
 		'custom_int1','custom_int2','custom_int3','custom_int4','custom_int5', # transaction custom details
 		
 		'email_confirmation','confirmation_address', # transaction options
@@ -75,20 +75,27 @@ def build_submission_data(data):
 
 def generateApiSignature(dataArray, passPhrase = ''):
 	payload = "" 
+	print('passed array',get_ordered_fields())
 	for key in get_ordered_fields():
 		if dataArray.get(key):
-			print('key', key)
+			print('key in get_ordered_fields', key)
 			payload += key + "=" + urllib.parse.quote_plus(dataArray[key].replace("+", " ")) + "&"
 	# After looping through, cut the last & or append your passphrase
 	payload = payload[:-1]
 	if passPhrase!='': payload += f"&passphrase={passPhrase}"
-	print('payload', payload)
+	print('payload ******', payload)
 
 	# Concatenate the fields in the specified order
-	message = dataArray[0] + dataArray[12] + dataArray[9] + dataArray[13] + dataArray[14]
-
+	message = dataArray['storename'] + dataArray['txndatetime'] + dataArray['chargetotal'] + dataArray['currency'] + dataArray['sharedsecret']
+	#message = '17221439602013:07:16-09:57:081.00826BMSsecret'
+	print('**** message ****', message)
+	
+	#convert to hexadecimal
+	hexadecimal_string = convert_string_to_ascii(message)
+	print('**** hexadecimal_string *****', hexadecimal_string)
+	
 	# Generate the SHA-256 hash of the message
-	hash_object = hashlib.sha256(message.encode())
+	hash_object = hashlib.sha256(hexadecimal_string.encode('utf-8'))
 
 	return hash_object.hexdigest()
 
@@ -142,30 +149,55 @@ def validate_bidvest_transaction(pfParamString, pfHost = 'https://test.ipg-onlin
     response = requests.post(url, data=pfParamString, headers=headers)
     return response.text == 'VALID'
 
+def convert_string_to_ascii(my_string):
+  hex_representation = []
+
+  for char in my_string:
+    ascii_value = ord(char)
+    hex_value = hex(ascii_value)[2:].zfill(2)
+    hex_representation.append(hex_value)
+
+  ascii_hex_representation = ''.join(hex_representation)
+
+  return ascii_hex_representation
+
+
 @frappe.whitelist()
 def test_connection(data):
 	data = json.loads(data)
-	timestamp_var=datetime.now().isoformat()
+	my_datetime = datetime.now()
+	timestamp_var = format_datetime(my_datetime, "yyyy:MM:dd-HH:mm:ss")
 	env = data.get('environment') or 'Sandbox'
 	data.pop('environment', None)
 	passphrase = data.get('passphrase') or ''
 	data.pop('passphrase', None)
-	data['amount']='5'
+	data['storename']='1722143960'
+	data['txndatetime']=timestamp_var
+	data['chargetotal']='15.00'
+	data['currency']='710'
+	data['sharedsecret']='BMSsecret'
+	data['hash_algorithm']='SHA256'
+	data['timezone']='Africa/Johannesbur'
+	data['mode']='payonly'
+	data['txntype']='sale'
 	data['item_name']='Test Product'
 	signature = generateApiSignature(data, passPhrase=passphrase)
-	data['signature']=signature
+	data['hash']=signature
+	print('test connection data', data)
 	response = requests.post(f"{environment_url(env)}/connect/gateway/processing", 
 		params=data,
 		headers={
 			'Accept': 'application/json',
 			'Content-Type': 'application/json',
+			'observe':'response',
+			
 		},
 	)
 	message = response.text
-	message = response.text.replace('/eng/images/',f"{environment_url(env)}/eng/images/")
-	message = message.replace('/onsite/images/',f"{environment_url(env)}/onsite/images/")
+	#message = response.text.replace('/eng/images/',f"{environment_url(env)}/eng/images/")
+	#message = message.replace('/onsite/images/',f"{environment_url(env)}/onsite/images/")
 	# message = message.replace('/eng/js/',f"{environment_url(env)}/eng/js/")
-	# print(response.text)
+	print('******response detail:', response.request.url)
 	if env=='Live':
 		message = 'Store ID and/or Merchant Key and/or Sharedphrase are either incorrect or does not exist in the bidvest Live environment. Please ensure that these are configured in the Developer Settings.'
 		if response.status_code==200:
