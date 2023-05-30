@@ -100,8 +100,8 @@ def generateApiSignature(dataArray, passPhrase = ''):
 	return hash_object.hexdigest()
 
 def environment_url(env):
-	if env=='Live': return 'https://www.bidvest.co.za'
-	return 'https://test.ipg-online.com'
+	if env=='Live': return 'https://www.ipg-online.com/'
+	return 'https://www.ipg-online.com/'
 
 def validate_bidvest_signature(pfData, pfParamString):
 	# Generate our signature from bidvest parameters
@@ -110,7 +110,8 @@ def validate_bidvest_signature(pfData, pfParamString):
 
 def validate_bidvest_host(host=''):    
 	valid_hosts = [
-		'test.ipg-online.com'
+		'www.ipg-online.com',
+		'ipg-online.com'
     ]
 	valid_ips = []
 
@@ -141,7 +142,7 @@ def validate_bidvest_host(host=''):
 def validate_bidvest_payment_amount(amount, pfData):
     return not (abs(float(amount)) - float(pfData.get('amount_gross'))) > 0.01
 
-def validate_bidvest_transaction(pfParamString, pfHost = 'https://test.ipg-online.com/'):
+def validate_bidvest_transaction(pfParamString, pfHost = 'https://www.ipg-online.com'):
     url = f"{pfHost}/eng/query/validate"
     headers = {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -177,10 +178,12 @@ def test_connection(data):
 	data['currency']='710'
 	data['sharedsecret']='BMSsecret'
 	data['hash_algorithm']='SHA256'
-	data['timezone']='Africa/Johannesbur'
+	data['timezone']='Africa/Johannesburg'
 	data['mode']='payonly'
 	data['txntype']='sale'
-	data['item_name']='Test Product'
+	data['oid']='Test-43662198'
+	data['responseSuccessURL'] = 'https://erp.stokdirect.africa/orders'
+	data['responseFailURL'] = 'https://erp.stokdirect.africa/cart'
 	signature = generateApiSignature(data, passPhrase=passphrase)
 	data['hash']=signature
 	print('test connection data', data)
