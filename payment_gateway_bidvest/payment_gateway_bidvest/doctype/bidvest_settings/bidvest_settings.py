@@ -181,8 +181,8 @@ def test_connection(data):
 	data['mode']='payonly'
 	data['txntype']='sale'
 	data['oid']='Test2-43662198'
-	data['responseSuccessURL'] = 'https://erp.stokdirect.africa/orders'
-	data['responseFailURL'] = 'https://erp.stokdirect.africa/cart'
+	data['responseSuccessURL'] = data['return_url']
+	data['responseFailURL'] = data['cancel_url']
 	signature = generateApiSignature(data, passPhrase=passphrase)
 	data['hash']=signature
 	print('test connection data', data)
@@ -199,6 +199,7 @@ def test_connection(data):
 	message = response.text.replace('/connect/gateway/',f"{environment_url(env)}/connect/gateway/")
 	message = message.replace('/connect/adf/',f"{environment_url(env)}/connect/adf/")
 	message = message.replace('/connect/images/',f"{environment_url(env)}/connect/images/")
+	message = message.replace('/connect/js/',f"{environment_url(env)}/connect/js/")
 	print('******response detail:', response.request.url)
 	if env=='Live':
 		message = 'Store ID and/or Merchant Key and/or Sharedphrase are either incorrect or does not exist in the bidvest Live environment. Please ensure that these are configured in the Developer Settings.'
