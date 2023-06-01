@@ -200,6 +200,7 @@ def test_connection(data):
 	message = message.replace('/connect/adf/',f"{environment_url(env)}/connect/adf/")
 	message = message.replace('/connect/images/',f"{environment_url(env)}/connect/images/")
 	message = message.replace('/connect/js/',f"{environment_url(env)}/connect/js/")
+	message = message.replace('/connect/payment/',f"{environment_url(env)}/connect/payment/")
 	print('******response detail:', response.request.url)
 	if env=='Live':
 		message = 'Store ID and/or Merchant Key and/or Sharedphrase are either incorrect or does not exist in the bidvest Live environment. Please ensure that these are configured in the Developer Settings.'

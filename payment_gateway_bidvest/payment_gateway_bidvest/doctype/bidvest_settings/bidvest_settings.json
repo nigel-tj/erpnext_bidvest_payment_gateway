@@ -42,7 +42,7 @@
   {
    "description": "The Shared phrase is an extra security feature, used as a \"salt\", and is set by the Merchant in the Settings section of their Bidvest Dashboard.",
    "fieldname": "passphrase",
-   "fieldtype": "Password",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Shared Secret",
    "reqd": 1
