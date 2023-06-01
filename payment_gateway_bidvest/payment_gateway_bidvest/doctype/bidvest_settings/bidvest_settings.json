@@ -70,7 +70,6 @@
    "description": "Optional. This is for when you have a URL for custom handling of cancellation redirects from the Bidvest website.",
    "fieldname": "cancel_url",
    "fieldtype": "Data",
-   "hidden": 1,
    "label": "Cancel URL"
   },
   {

@@ -3,7 +3,7 @@
 
 frappe.ui.form.on('Bidvest Settings', {
 	refresh: function(frm) {
-		//frm.disable_save();
+		frm.disable_save();
 		frm.set_query('paid_to', () => {
 			return {
 				filters: {
@@ -82,10 +82,12 @@ frappe.ui.form.on('Bidvest Settings', 'test_connection', function(){
 		args: { data:{
 			storename: cur_frm.doc.storename,
 			passphrase: cur_frm.doc.passphrase,
-			environment: cur_frm.doc.environment
+			environment: cur_frm.doc.environment,
+			return_url: cur_frm.doc.return_url,
+			cancel_url: cur_frm.doc.cancel_url
 		}},
 		callback: (r) => {
-			// console.log(r)
+			console.log(r)
 			// cur_frm.doc.test_connection.read_only=0;
 			cur_frm.set_df_property('test_connection','label','Test Connection');
 			cur_frm.set_df_property('test_connection','read_only', 0);

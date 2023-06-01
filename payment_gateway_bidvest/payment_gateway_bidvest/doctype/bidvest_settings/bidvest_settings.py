@@ -86,8 +86,8 @@ def generateApiSignature(dataArray, passPhrase = ''):
 	print('payload ******', payload)
 
 	# Concatenate the fields in the specified order
-	message = dataArray['storename'] + dataArray['txndatetime'] + dataArray['chargetotal'] + dataArray['currency'] + dataArray['sharedsecret']
-	#message = '17221439602013:07:16-09:57:081.00826BMSsecret'
+	message = dataArray['storename'] + dataArray['txndatetime'] + dataArray['chargetotal'] + dataArray['currency'] + passPhrase
+	#message = '17221439602013:07:16-09:57:081.00826Sharedsecret'
 	print('**** message ****', message)
 	
 	#convert to hexadecimal
@@ -110,8 +110,8 @@ def validate_bidvest_signature(pfData, pfParamString):
 
 def validate_bidvest_host(host=''):    
 	valid_hosts = [
-		'www.ipg-online.com',
-		'ipg-online.com'
+		'192.168.100.30',
+		'erp.stokdirect.africa'
     ]
 	valid_ips = []
 
@@ -176,12 +176,11 @@ def test_connection(data):
 	data['txndatetime']=timestamp_var
 	data['chargetotal']='15.00'
 	data['currency']='710'
-	data['sharedsecret']= passphrase
 	data['hash_algorithm']='SHA256'
 	data['timezone']='Africa/Johannesburg'
 	data['mode']='payonly'
 	data['txntype']='sale'
-	data['oid']='Test-43662198'
+	data['oid']='Test2-43662198'
 	data['responseSuccessURL'] = 'https://erp.stokdirect.africa/orders'
 	data['responseFailURL'] = 'https://erp.stokdirect.africa/cart'
 	signature = generateApiSignature(data, passPhrase=passphrase)
@@ -197,9 +196,9 @@ def test_connection(data):
 		},
 	)
 	message = response.text
-	#message = response.text.replace('/eng/images/',f"{environment_url(env)}/eng/images/")
-	#message = message.replace('/onsite/images/',f"{environment_url(env)}/onsite/images/")
-	# message = message.replace('/eng/js/',f"{environment_url(env)}/eng/js/")
+	message = response.text.replace('/connect/gateway/',f"{environment_url(env)}/connect/gateway/")
+	message = message.replace('/connect/adf/',f"{environment_url(env)}/connect/adf/")
+	message = message.replace('/connect/images/',f"{environment_url(env)}/connect/images/")
 	print('******response detail:', response.request.url)
 	if env=='Live':
 		message = 'Store ID and/or Merchant Key and/or Sharedphrase are either incorrect or does not exist in the bidvest Live environment. Please ensure that these are configured in the Developer Settings.'
