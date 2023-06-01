@@ -80,7 +80,7 @@ frappe.ui.form.on('Bidvest Settings', 'test_connection', function(){
 	frappe.call({
 		method:'payment_gateway_bidvest.payment_gateway_bidvest.doctype.bidvest_settings.bidvest_settings.test_connection',
 		args: { data:{
-			merchant_id: cur_frm.doc.storename,
+			storename: cur_frm.doc.storename,
 			passphrase: cur_frm.doc.passphrase,
 			environment: cur_frm.doc.environment
 		}},

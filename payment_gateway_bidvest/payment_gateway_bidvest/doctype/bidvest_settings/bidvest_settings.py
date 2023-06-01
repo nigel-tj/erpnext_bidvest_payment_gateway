@@ -172,11 +172,11 @@ def test_connection(data):
 	data.pop('environment', None)
 	passphrase = data.get('passphrase') or ''
 	data.pop('passphrase', None)
-	data['storename']='1722143960'
+	data['storename']= data['storename']
 	data['txndatetime']=timestamp_var
 	data['chargetotal']='15.00'
 	data['currency']='710'
-	data['sharedsecret']='BMSsecret'
+	data['sharedsecret']= passphrase
 	data['hash_algorithm']='SHA256'
 	data['timezone']='Africa/Johannesburg'
 	data['mode']='payonly'
