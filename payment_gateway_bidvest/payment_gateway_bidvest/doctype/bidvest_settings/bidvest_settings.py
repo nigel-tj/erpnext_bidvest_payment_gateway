@@ -47,7 +47,8 @@ class BidvestSettings(Document):
 		self.integration_request = create_request_log(kwargs, "Host", "Bidvest")
 		# bidvest allows for up to 5 custom string fields. We can pass the integration request id 
 		kwargs['integration_request_id']=self.integration_request.name
-		return get_url("./bidvest_checkout?{0}".format(urlencode(kwargs)))
+		print("***** paypent : get_payment_url ****** ", get_url("./{0}".format(urlencode(kwargs))))
+		return get_url("./{0}".format(urlencode(kwargs)))
 
 def get_gateway_controller(doc):
 	payment_request = frappe.get_doc("Payment Request", doc)
