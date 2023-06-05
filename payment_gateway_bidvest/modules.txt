@@ -1,1 +1,2 @@
-Payment Gateway Bidvest
+Payments
+Payment Gateways
