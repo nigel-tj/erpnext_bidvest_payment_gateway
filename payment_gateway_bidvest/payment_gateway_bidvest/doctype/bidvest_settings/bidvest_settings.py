@@ -84,7 +84,6 @@ def generateApiSignature(dataArray, passPhrase = ''):
 	# After looping through, cut the last & or append your passphrase
 	payload = payload[:-1]
 	if passPhrase!='': payload += f"&passphrase={passPhrase}"
-	print('payload ******', payload)
 
 	# Concatenate the fields in the specified order
 	message = dataArray['storename'] + dataArray['txndatetime'] + dataArray['chargetotal'] + dataArray['currency'] + passPhrase
