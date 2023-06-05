@@ -47,8 +47,8 @@ class BidvestSettings(Document):
 		self.integration_request = create_request_log(kwargs, "Host", "Bidvest")
 		# bidvest allows for up to 5 custom string fields. We can pass the integration request id 
 		kwargs['integration_request_id']=self.integration_request.name
-		print("***** paypent : get_payment_url ****** ", get_url("./{0}".format(urlencode(kwargs))))
-		return get_url("./{0}".format(urlencode(kwargs)))
+		print("***** paypent kwargs : get_payment_url ****** ", kwargs)
+		return get_url("./bidvest_checkout?{0}".format(urlencode(kwargs)))
 
 def get_gateway_controller(doc):
 	payment_request = frappe.get_doc("Payment Request", doc)
@@ -182,6 +182,7 @@ def test_connection(data):
 	data['mode']='payonly'
 	data['txntype']='sale'
 	data['oid']='Test2-43662198'
+	data['checkoutoption'] = 'combinedpage'
 	data['responseSuccessURL'] = data['return_url']
 	data['responseFailURL'] = data['cancel_url']
 	signature = generateApiSignature(data, passPhrase=passphrase)
@@ -197,11 +198,10 @@ def test_connection(data):
 		},
 	)
 	message = response.text
-	message = response.text.replace('/connect/gateway/',f"{environment_url(env)}/connect/gateway/")
-	message = message.replace('/connect/adf/',f"{environment_url(env)}/connect/adf/")
-	message = message.replace('/connect/images/',f"{environment_url(env)}/connect/images/")
-	message = message.replace('/connect/js/',f"{environment_url(env)}/connect/js/")
-	message = message.replace('/connect/payment/',f"{environment_url(env)}/connect/payment/")
+	message = response.text.replace('/connect/',f"{environment_url(env)}/connect/")
+	#message = message.replace('/connect/',f"{environment_url(env)}/connect/")
+	#message = message.replace('/connect/images/',f"{environment_url(env)}/connect/images/")
+	#message = message.replace('/connect/js/',f"{environment_url(env)}/connect/js/")
 	print('******response detail:', response.request.url)
 	if env=='Live':
 		message = 'Store ID and/or Merchant Key and/or Sharedphrase are either incorrect or does not exist in the bidvest Live environment. Please ensure that these are configured in the Developer Settings.'

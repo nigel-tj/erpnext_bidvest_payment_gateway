@@ -23,14 +23,15 @@ def get_context(context):
 		'custom_str1':data.get('integration_request_id'),
 		'name_first':data.get('payer_name') or '',
 		'email_address':data.get('payer_email') or '',
-		'm_payment_id':data.get('order_id') or '',
+		'oid':data.get('order_id') or '',
 		'storename':context.gateway_details.get('storename') or '',
 		'return_url':context.gateway_details.get('return_url') or f"{frappe.utils.get_url()}/bidvest_success",
 		'cancel_url':f"{frappe.utils.get_url()}/bidvest_cancel?integration_request_id={data.get('integration_request_id')}",
-		# 'cancel_url':data.get('redirect_to') or '',
+		'cancel_url':data.get('redirect_to') or '',
+		'checkoutoption': 'combinedpage',
 		'notify_url':f"{frappe.utils.get_url()}/bidvest_notify",
-		# 'notify_url':context.gateway_details.get('notify_url') or f"{frappe.utils.get_url()}/bidvest_notify",
-		'txndatetime':f"{frappe.utils.now_datetime().strftime('%Y:%m:%d-%H:%M:%S')}",
+		'notify_url':context.gateway_details.get('notify_url') or f"{frappe.utils.get_url()}/bidvest_notify",
+		'txndatetime':f"{frappe.utils.now_datetime().strftime('yyyy:MM:dd-HH:mm:ss')}",
 		'timezone':f"{frappe.get_doc('System Settings').timezone}",
 		'currency': data.get('currency'),
 		'sharedsecret': context.gateway_details.get('passphrase') or '',
@@ -65,6 +66,6 @@ def make_payment(payload_nonce, data, reference_doctype, reference_docname):
 	})
 
 	gateway_controller = get_gateway_controller(reference_docname)
-	data =  frappe.get_doc("bidvest Settings", gateway_controller).create_payment_request(data)
+	data =  frappe.get_doc("Bidvest Settings", gateway_controller).create_payment_request(data)
 	frappe.db.commit()
 	return data
