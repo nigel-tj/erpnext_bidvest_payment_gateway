@@ -17,7 +17,7 @@ def get_context(context):
 	context.gateway_details=gateway_doc.as_dict()
 	#context.gateway_details.merchant_key=gateway_doc.get_password('merchant_key')
 	submission_data={
-		'amount':data.get('amount') or '',
+		'chargetotal':data.get('amount') or '',
 		'item_name':data.get('title') or '',
 		'item_description':data.get('description') or '',
 		'custom_str1':data.get('integration_request_id'),
