@@ -32,7 +32,7 @@ def get_context(context):
 		'notify_url':f"{frappe.utils.get_url()}/bidvest_notify",
 		'notify_url':context.gateway_details.get('notify_url') or f"{frappe.utils.get_url()}/bidvest_notify",
 		'txndatetime':f"{frappe.utils.now_datetime().strftime('yyyy:MM:dd-HH:mm:ss')}",
-		'timezone':f"{frappe.get_doc('System Settings').timezone}",
+		'timezone':f"{frappe.get_doc('System Settings').time_zone}",
 		'currency': data.get('currency'),
 		#'sharedsecret': context.gateway_details.get('passphrase') or '',
 	}
