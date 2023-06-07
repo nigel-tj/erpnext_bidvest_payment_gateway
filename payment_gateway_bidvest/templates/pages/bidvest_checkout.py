@@ -26,11 +26,11 @@ def get_context(context):
 		'return_url':context.gateway_details.get('return_url') or f"{frappe.utils.get_url()}/bidvest_success",
 		'cancel_url':f"{frappe.utils.get_url()}/bidvest_cancel?integration_request_id={data.get('integration_request_id')}",
 		#'cancel_url':data.get('redirect_to') or '',
-		'notify_url':f"{frappe.utils.get_url()}/bidvest_notify",
-		'notify_url':context.gateway_details.get('notify_url') or f"{frappe.utils.get_url()}/bidvest_notify",
+		#'notify_url':f"{frappe.utils.get_url()}/bidvest_notify",
+		#'notify_url':context.gateway_details.get('notify_url') or f"{frappe.utils.get_url()}/bidvest_notify",
 		'txndatetime':f"{frappe.utils.now_datetime().strftime('%Y:%m:%d-%H:%M:%S')}",
 		'timezone':f"{frappe.get_doc('System Settings').time_zone}",
-		'currency': data.get('currency'),
+		#'currency': data.get('currency'),
 		#'sharedsecret': context.gateway_details.get('passphrase') or '',
 	}
 	submission_data=build_submission_data(submission_data)
