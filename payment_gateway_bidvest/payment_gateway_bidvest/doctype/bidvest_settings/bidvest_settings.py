@@ -58,7 +58,7 @@ def get_gateway_controller(doc):
 def get_ordered_fields():
 	# bidvest validates against a particular order before processing for payment
 	ordered_fields = [
-		'storename', 'txndatetime', 'amount', 'currency', 'sharedsecret','return_url','cancel_url','notify_url', # merchant details
+		'storename', 'txndatetime', 'chargetotal', 'currency', 'sharedsecret','return_url','cancel_url','notify_url', # merchant details
 		'name_first','name_last','email_address','cell_number', # customer details
 		'm_payment_id','item_name','item_description', # transaction details
 		'custom_str4','custom_str5', # transaction custom details
