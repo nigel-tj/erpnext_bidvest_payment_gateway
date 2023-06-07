@@ -15,15 +15,16 @@
 		<form method="post" action="{{ payment_details.bidvest_url }}" name="bidvest_checkout_form">
 			<input type="hidden" name="storename" value="{{submission_data.storename}}">
             <input type="hidden" name="txntype" value="sale">
-            <input type="hidden" name="return_url" value="{{submission_data.return_url}}">
-            <input type="hidden" name="cancel_url" value="{{submission_data.cancel_url}}">
+            <input type="hidden" name="responseSuccessURL" value="{{submission_data.return_url}}">
+            <input type="hidden" name="responseFailURL" value="{{submission_data.cancel_url}}">
             <input type="hidden" name="notify_url" value="{{submission_data.notify_url}}">
             <input type="hidden" name="timezone" value="{{submission_data.timezone}}"/>
             <input type="hidden" name="txndatetime" value="{{submission_data.txndatetime}}"/>
             <input type="hidden" name="hash_algorithm" value="SHA256" />
             <input type="hidden" name="hash" value="{{submission_data.hash}}"/>
             <input type="hidden" name="checkoutoption" value="combinedpage"/>
-
+            <input type="hidden" name="currency" value="710"/>
+            <input type="hidden" name="mode" value="payonly"/>
             <div class="form-group row">
                 <label for="name_first" class="col-sm-2 col-form-label">Name</label>
                 <div class="col-sm-10">
@@ -61,7 +62,7 @@
                 </div>
             </div>
             <input type="hidden" name="custom_str1" value="{{submission_data.custom_str1}}">
-    
+            
             <input class="btn btn-secondary" type="button" value="Go back" onclick="history.back()">
             <input class="btn btn-primary" type="submit" value="Proceed to Payment">
 		</form>
