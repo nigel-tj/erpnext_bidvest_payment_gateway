@@ -15,7 +15,7 @@ def get_context(context):
 	print('Checkout data',data)
 	gateway_doc = frappe.get_doc(data.get('gateway_doctype'), data.get('gateway_docname'))
 	context.gateway_details=gateway_doc.as_dict()
-	context.gateway_details.merchant_key=gateway_doc.get_password('merchant_key')
+	#context.gateway_details.merchant_key=gateway_doc.get_password('merchant_key')
 	submission_data={
 		'amount':data.get('amount') or '',
 		'item_name':data.get('title') or '',
@@ -34,7 +34,7 @@ def get_context(context):
 		'txndatetime':f"{frappe.utils.now_datetime().strftime('yyyy:MM:dd-HH:mm:ss')}",
 		'timezone':f"{frappe.get_doc('System Settings').timezone}",
 		'currency': data.get('currency'),
-		'sharedsecret': context.gateway_details.get('passphrase') or '',
+		#'sharedsecret': context.gateway_details.get('passphrase') or '',
 	}
 	submission_data=build_submission_data(submission_data)
 	submission_data['hash'] = generateApiSignature(submission_data, passPhrase=gateway_doc.get_password('passphrase'))
