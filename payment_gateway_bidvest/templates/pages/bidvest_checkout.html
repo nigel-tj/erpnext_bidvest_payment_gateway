@@ -21,8 +21,8 @@
             <input type="hidden" name="timezone" value="{{submission_data.timezone}}"/>
             <input type="hidden" name="txndatetime" value="{{submission_data.txndatetime}}"/>
             <input type="hidden" name="hash_algorithm" value="SHA256" />
-	
-            <input type="hidden" name="hash" value="<?php echo createHash( "13.00","978" ) ?>"/>
+            <input type="hidden" name="hash" value="{{submission_data.hash}}"/>
+            <input type="hidden" name="checkoutoption" value="combinedpage"/>
 
             <div class="form-group row">
                 <label for="name_first" class="col-sm-2 col-form-label">Name</label>

@@ -18,8 +18,6 @@ def get_context(context):
 	#context.gateway_details.merchant_key=gateway_doc.get_password('merchant_key')
 	submission_data={
 		'chargetotal':data.get('amount') or '',
-		'item_name':data.get('title') or '',
-		'item_description':data.get('description') or '',
 		'custom_str1':data.get('integration_request_id'),
 		'name_first':data.get('payer_name') or '',
 		'email_address':data.get('payer_email') or '',
@@ -28,7 +26,6 @@ def get_context(context):
 		'return_url':context.gateway_details.get('return_url') or f"{frappe.utils.get_url()}/bidvest_success",
 		'cancel_url':f"{frappe.utils.get_url()}/bidvest_cancel?integration_request_id={data.get('integration_request_id')}",
 		'cancel_url':data.get('redirect_to') or '',
-		'checkoutoption': 'combinedpage',
 		'notify_url':f"{frappe.utils.get_url()}/bidvest_notify",
 		'notify_url':context.gateway_details.get('notify_url') or f"{frappe.utils.get_url()}/bidvest_notify",
 		'txndatetime':f"{frappe.utils.now_datetime().strftime('yyyy:MM:dd-HH:mm:ss')}",
