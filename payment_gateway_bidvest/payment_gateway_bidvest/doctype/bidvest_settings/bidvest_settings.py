@@ -100,8 +100,8 @@ def generateApiSignature(dataArray, passPhrase = ''):
 	return hash_object.hexdigest()
 
 def environment_url(env):
-	if env=='Live': return 'https://www.ipg-online.com/'
-	return 'https://www.ipg-online.com/'
+	if env=='Live': return 'https://www.ipg-online.com'
+	return 'https://www.ipg-online.com'
 
 def validate_bidvest_signature(pfData, pfParamString):
 	# Generate our signature from bidvest parameters
