@@ -44,6 +44,7 @@ def get_context(context):
 		
 		reference_doc = frappe.get_doc(web_ref_doc.doc_type, data.get('order_id'))
 		meta = frappe.get_meta(web_ref_doc.doc_type)
+		print(meta)
 		if meta.has_field('paid'):
 			if reference_doc.paid:
 				frappe.local.response["type"] = "redirect"
