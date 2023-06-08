@@ -30,6 +30,7 @@ def get_context(context):
 		#'notify_url':context.gateway_details.get('notify_url') or f"{frappe.utils.get_url()}/bidvest_notify",
 		'txndatetime':f"{frappe.utils.now_datetime().strftime('%Y:%m:%d-%H:%M:%S')}",
 		'timezone':f"{frappe.get_doc('System Settings').time_zone}",
+		#'currency': data.get('currency'),
 		#'sharedsecret': context.gateway_details.get('passphrase') or '',
 	}
 	submission_data=build_submission_data(submission_data)
