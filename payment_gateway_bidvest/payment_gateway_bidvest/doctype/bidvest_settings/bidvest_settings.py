@@ -47,7 +47,7 @@ class BidvestSettings(Document):
 		self.integration_request = create_request_log(kwargs, "Host", "Bidvest")
 		# bidvest allows for up to 5 custom string fields. We can pass the integration request id 
 		kwargs['integration_request_id']=self.integration_request.name
-		print("***** paypent kwargs : get_payment_url ****** ", kwargs)
+		#print("***** paypent kwargs : get_payment_url ****** ", kwargs)
 		return get_url("./bidvest_checkout?{0}".format(urlencode(kwargs)))
 
 def get_gateway_controller(doc):
@@ -76,10 +76,10 @@ def build_submission_data(data):
 
 def generateApiSignature(dataArray, passPhrase = ''):
 	payload = "" 
-	print('passed array',get_ordered_fields())
+	#print('passed array',get_ordered_fields())
 	for key in get_ordered_fields():
 		if dataArray.get(key):
-			print('key in get_ordered_fields', key)
+			#print('key in get_ordered_fields', key)
 			payload += key + "=" + urllib.parse.quote_plus(dataArray[key].replace("+", " ")) + "&"
 	# After looping through, cut the last & or append your passphrase
 	payload = payload[:-1]
@@ -88,7 +88,7 @@ def generateApiSignature(dataArray, passPhrase = ''):
 	# Concatenate the fields in the specified order
 	message = dataArray['storename'] + dataArray['txndatetime'] + dataArray['chargetotal'] + dataArray['currency'] + passPhrase
 	#message = '17221439602013:07:16-09:57:081.00826Sharedsecret'
-	print('**** message ****', message)
+	#print('**** message ****', message)
 	
 	#convert to hexadecimal
 	hexadecimal_string = convert_string_to_ascii(message)
